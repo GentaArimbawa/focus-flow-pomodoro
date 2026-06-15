@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# FocusFlow - Pomodoro Timer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Pomodoro timer built with React 19, TypeScript, Tailwind CSS v4, and Vite. Helps you stay focused with timed work sessions, task tracking, and progress statistics.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** with TypeScript
+- **Vite 8** for build tooling
+- **Tailwind CSS v4** with Material Design 3 color system
+- **React Router v7** for client-side routing
+- **Lucide React** for icons
+- **localStorage** for data persistence (Firebase planned)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Pomodoro Timer** — Customizable focus/break intervals with circular progress ring, audio + desktop notifications, and auto-cycle support.
+- **Task Management** — Add, edit, complete, and delete tasks with estimated pomodoro counts. Tracks total completed tasks.
+- **Statistics Dashboard** — View daily streak, total tasks completed, total sessions completed, and weekly activity heatmap.
+- **Session Tracking** — Automatically logs completed pomodoro sessions and builds a daily activity log.
+- **Responsive Layout** — Collapsible desktop sidebar and mobile bottom navigation.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repo-url>
+cd pomdoro-technicue
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Build for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
+## Project Structure
+
+```
+src/
+  main.tsx                   Entry point with PomodoroProvider
+  App.tsx                    Router setup (/timer, /settings, /stats)
+  index.css                  Tailwind imports + custom theme tokens
+  context/
+    PomodoroContext.tsx       Timer state machine, session logging
+  layouts/
+    MainLayout.tsx            Sidebar + mobile navbar + outlet
+  hooks/
+    useLocalStorage.ts        Generic localStorage persistence
+    useTimerSettings.ts       Timer duration & notification prefs
+    useTasks.ts               Task CRUD with localStorage sync
+  pages/
+    TimerPage.tsx             Main dashboard (timer + tasks + stats)
+    SettingsPage.tsx          Timer config, notifications, display
+    StatsPage.tsx             Full statistics dashboard
+  components/
+    timer/                    TimerCard, TimerDisplay, TimerProgress,
+                              TimerControls, SessionStatus
+    tasks/                    TaskList, TaskItem, TaskForm
+    stats/                    StatCard, StreakCard, WeeklyChart
+    navigation/               Sidebar, MobileNavbar
+    common/                   Logo
+  utils/
+    notification.ts           Sound & desktop notification helpers
+  services/                   (placeholder for Firebase integration)
+```
+
+## How It Works
+
+### Timer
+The Pomodoro timer cycles through three modes: **Pomodoro** (focus), **Short Break**, and **Long Break**. Every 4 pomodoros triggers a long break. Sessions auto-advance when the timer reaches zero, with optional sound and desktop notifications.
+
+### Task Tracking
+Tasks are stored in `localStorage` under `focusflow-tasks`. Completing a task toggles its `completed` flag and syncs the total count to the stats page. Each task can have an estimated pomodoro count to help plan your focus sessions.
+
+### Statistics
+Session completions are logged to `localStorage` (`totalSectionsComplete`, `dailyActivity`). The stats page reads this data to display:
+- **Day Streak** — Consecutive days with at least one completed session
+- **Tasks Complete** — Running count of completed tasks
+- **Sessions Complete** — Total pomodoro sessions finished
+- **This Week** — 7-day activity heatmap
+- **Weekly Distribution** — Bar chart of daily focus activity
+
+### Settings
+Configure pomodoro (1-60 min), short break (1-30 min), and long break (1-60 min) durations. Toggle sound effects and desktop notifications. Display options include language selection.
+
+## Deployment
+
+The app is a static SPA and can be deployed to any static hosting provider:
+
+```bash
+npm run build
+# Deploy the dist/ folder to Vercel, Netlify, Cloudflare Pages, etc.
+```
+
+## Design
+
+See [DESIGN.md](./DESIGN.md) for the full design system documentation, including color tokens, typography scale, layout guidelines, and component specifications.
