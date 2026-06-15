@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TrendingUp } from 'lucide-react'
 import TimerCard from '../components/timer/TimerCard'
 import TaskList from '../components/tasks/TaskList'
@@ -41,6 +41,10 @@ function calcStreak(activity: string[]) {
 }
 
 const TimerPage: React.FC = () => {
+  useEffect(() => {
+    document.title = 'FocusFlow - Pomodoro Timer'
+  }, [])
+
   const [settings] = useTimerSettings()
   const [totalSessions] = useState(() => {
     const stored = localStorage.getItem('totalSectionsComplete')

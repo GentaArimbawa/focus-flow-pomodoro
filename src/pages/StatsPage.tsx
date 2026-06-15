@@ -79,6 +79,10 @@ const useWeeklyActivity = () => {
 }
 
 const StatsPage = () => {
+  useEffect(() => {
+    document.title = 'FocusFlow - Statistics'
+  }, [])
+
   const { totalTasksComplete } = useTaskData()
   const { totalStreak } = useStreakData()
   const { totalSectionsComplete } = useSectionData()

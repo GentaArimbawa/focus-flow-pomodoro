@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Timer, CheckCircle, BarChart3, Bell, ArrowRight, ExternalLink, Mail, Menu, X, Play, Clock, Flame } from 'lucide-react'
 import Logo from '../components/common/Logo'
@@ -32,6 +32,10 @@ const FeatureCard = ({ icon: Icon, title, desc }: FeatureCardProps) => (
 
 const Home = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    document.title = 'FocusFlow - Focus to Your Goals'
+  }, [])
 
   return (
     <div className="min-h-screen bg-surface text-on-surface font-sans">

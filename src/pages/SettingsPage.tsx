@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { User, Clock, Bell, Monitor, ChevronDown } from 'lucide-react'
 import { usePomodoro } from '../context/PomodoroContext'
 
 const TOGGLE_CLASSES = "w-11 h-6 bg-surface-container-highest rounded-full peer-checked:bg-secondary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"
 
 const SettingsPage: React.FC = () => {
+  useEffect(() => {
+    document.title = 'FocusFlow - Settings'
+  }, [])
+
   const [name, setName] = useState('John Doe')
   const [email, setEmail] = useState('john@example.com')
   const { settings: timerSettings, setSettings: setTimerSettings, refreshTimer } = usePomodoro()
